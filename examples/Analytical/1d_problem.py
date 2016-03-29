@@ -15,9 +15,10 @@ p(x_{wf}, t) = p_{wf},
 
 """
 
-
+# Remove when running not from examples/Analytical
 from import_path import import_path
 import_path("../../SPhInComp2D.py")
+#
 import numpy as np
 from SPhInComp2D import SPhInComp2D
 from analytical import analytical_rate

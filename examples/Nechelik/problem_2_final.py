@@ -1,3 +1,6 @@
+from import_path import import_path
+import_path("../../SPhInComp2D.py")
+import_path("../../WellHandler.py")
 import numpy as np
 from Units import Units
 from WellHandler import WellHandler
@@ -31,12 +34,12 @@ def main():
     constraints = [0, 0, 0, 0]
     bc_values = [0, 0, 0, 0]
     wells = {
-        '1': {'heel': [4184, 1569], 'rad': 0.25, 'dir': 3},
+        '1': {'heel': [4184., 1569.], 'rad': 0.25, 'dir': 3},
         '2': {'heel': [4968.5, 2510.4], 'rad': 0.25, 'dir': 3},
         '3': {'heel': [3294.9, 2928.8], 'rad': 0.25, 'dir': 3},
         '4': {'heel': [2562.7, 4393.2], 'rad': 0.25, 'dir': 3},
         '5': {'heel': [1307.5, 2824.2], 'rad': 0.25, 'dir': 3},
-        '6': {'heel': [890, 895], 'len': 225, 'rad': 0.25, 'dir': 1},
+        '6': {'heel': [890., 895.], 'len': 225, 'rad': 0.25, 'dir': 1},
     }
 
     schedule = [
@@ -52,14 +55,14 @@ def main():
         [300., '6', 2, 2000., 0.0],
     ]
 
-    wh = WellHandler(wells, dx, dy , dz)
-    wh.locateWells(nx, ny, x_centers, y_centers)
+    wh = WellHandler(nx, ny)
+    wh.locateWells(x_centers, y_centers, wells)
     # for w in wells:
     #     cells = wells[w]['cells']
     #     print w, cells
 
     input_data = {
-        "CASE": "PJ1-final",     # name of the simulation case
+        "CASE": "PJ1",     # name of the simulation case
         "DIMS": [xSize, ySize],      # dimensions of reservoir
         # "XCELLS": x_centers,    # y-coordinates of the cells
         # "YCELLS": y_centers,    # x-coordinates of the cells
@@ -97,4 +100,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

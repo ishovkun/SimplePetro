@@ -1,3 +1,13 @@
 # compiled python files
 *.pyo
 *.pyc
+*.prd
+*.rep
+examples/Nechelik/*.rep
+examples/Nechelik/*.prd
+examples/Nechelik/*.pyc
+examples/Nechelik/*.pyo
+examples/Analytical/*.rep
+examples/Analytical/*.prd
+examples/Analytical/*.pyc
+examples/Analytical/*.pyo

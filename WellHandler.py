@@ -14,7 +14,7 @@ class WellHandler(object):
             dz: np.array(nx*ny)
                 cell thicknesses
         '''
-        super(WellHandler, self).__init__()
+        # super(WellHandler, self).__init__()
         if not isinstance(nx, (int, long)):
             raise ValueError("nx should be an integer")
         if not isinstance(ny, (int, long)):

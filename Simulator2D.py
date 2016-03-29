@@ -164,7 +164,7 @@ class Simulator2D(object):
             "CGMAXITER": "cgmaxiter"
         }
 
-        optional_keys = ["CGEPS", "CGMAXITER"]
+        optional_keys = ["CGEPS", "CGMAXITER", "NEWTTOL"]
 
         n_needed_keys = len(needed_keys)
         for k in xrange(n_needed_keys):

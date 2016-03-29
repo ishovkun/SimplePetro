@@ -354,6 +354,30 @@ class Assembler2D(object):
         j_matrix = diags(j_centers, 0, (nx*ny, nx*ny), format='csr')
         return j_matrix
 
+    def getJacobian(self, x0, res0, compute_res, args, dx=1e-2):
+        '''
+        Assembles a Jacobian matrix. Computes the Jacobian
+        numerically.
+        Input:
+            x0: np.array(nx*ny)
+                solution from the previous iteration
+            res0: np.array(nx*ny)
+                residual value corresponding to x0
+            compute_res: function
+                function that computes residual. Must be taking x0 as
+                a first argument.
+            args: tuple?
+                additional arguments passed to the compute_res function
+            dx: float
+                x increment. the derivatives are taken as
+                (compute_res(x0+dx) - res0)/dx
+        Returns:
+            jacobian: scipy.sparse matrix (csr?)
+                the jacobian of the system
+        '''
+        
+        print compute_res(x0, *args)
+
 
 if __name__ == '__main__':
     size = [4, 5]
