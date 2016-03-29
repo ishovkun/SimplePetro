@@ -3,7 +3,7 @@ from import_path import import_path
 import numpy as np
 import scipy as sp
 from copy import deepcopy
-import_path("../WellHandler.py")
+import_path("../lib2d/WellHandler.py")
 from WellHandler import WellHandler
 
 class WellHandlerTest(unittest.TestCase):

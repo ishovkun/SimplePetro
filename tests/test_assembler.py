@@ -3,7 +3,7 @@ from import_path import import_path
 import numpy as np
 import scipy as sp
 from copy import deepcopy
-import_path("../Assembler.py")
+import_path("../lib2d/Assembler.py")
 from Assembler import Assembler2D
 
 

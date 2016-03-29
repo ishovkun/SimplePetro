@@ -3,9 +3,9 @@ from scipy.sparse import diags
 import scipy.sparse.linalg as sparse_solvers
 import scipy
 from Units import Units
-from WellHandler import WellHandler
-from Assembler import Assembler2D
-from Simulator2D import Simulator2D
+from lib2d.WellHandler import WellHandler
+from lib2d.Assembler import Assembler2D
+from lib2d.Simulator2D import Simulator2D
 
 
 class SPhInComp2D(Simulator2D):

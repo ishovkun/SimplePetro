@@ -1,11 +1,10 @@
 # Remove when running not from examples/NecheliK
 from import_path import import_path
 import_path("../../SPhInComp2D.py")
-import_path("../../WellHandler.py")
 #
 import numpy as np
-from Units import Units
-from WellHandler import WellHandler
+from lib2d.Units import Units
+from lib2d.WellHandler import WellHandler
 from SPhInComp2D import SPhInComp2D
 
 
