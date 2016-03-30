@@ -17,7 +17,7 @@ class SPhInComp2D_NR(Simulator2D):
     but good for testing the algorithm).
     """
     def __init__(self, **input_data):
-        super(SPhInComp2D, self).__init__(**input_data)
+        super(SPhInComp2D_NR, self).__init__(**input_data)
         self._readInput()
 
         self.units = Units("Oilfield")
@@ -27,26 +27,14 @@ class SPhInComp2D_NR(Simulator2D):
         self.newt_tol = 1e-5
 
     def _readInput(self):
-        super(SPhInComp2D, self)._readInput()
-        super(SPhInComp2D, self)._getActiveCells()
+        super(SPhInComp2D_NR, self)._readInput()
+        super(SPhInComp2D_NR, self)._getActiveCells()
 
     def _readSchedule(self, current_time, dt):
-        return super(SPhInComp2D, self)._readSchedule(current_time, dt)
+        return super(SPhInComp2D_NR, self)._readSchedule(current_time, dt)
 
     def _saveFieldData(self, data, time):
-        super(SPhInComp2D, self)._saveFieldData(data, time)
-
-    def _computePreconditioner(self, system_matrix):
-        '''
-        Create a preconditioner base on
-        an incomplete LU decomposition
-        '''
-        # convert to compressed column storage format (efficiency)
-        sm_csc = system_matrix.tocsc()
-        lu = sparse_solvers.spilu(sm_csc)
-        m_operator = lambda x: lu.solve(x)
-        shape = (self.nx*self.ny, self.nx*self.ny)
-        self.preconditioner = sparse_solvers.LinearOperator(shape, m_operator)
+        super(SPhInComp2D_NR, self)._saveFieldData(data, time)
 
     def solve(self):
         # abbreviations
@@ -86,8 +74,8 @@ class SPhInComp2D_NR(Simulator2D):
         b_matrix = diags(b_centers, 0, shape=(nx*ny, nx*ny), format='csr')
 
         p_mean = self.p_init.mean()
-        while (t < dt):      # time loop
-        # while (t < self.reptimes[-1]):      # time loop
+        # while (t < dt):      # time loop
+        while (t < self.reptimes[-1]):      # time loop
             p_old = p
 
             # store original time step (it can change due to schedule)
@@ -118,15 +106,25 @@ class SPhInComp2D_NR(Simulator2D):
                 # norm of pressure increment (normalize by average pressure)
                 error1 = np.linalg.norm(dp)/p_mean
                 # norm or the residual (normalize by pore volume)
-                error2 = np.linalg.norm(residual)  #/(self.poro*self.area*self.dx)
+                error2 = np.linalg.norm(residual)
                 error = error1 + error2
                 # print niter
                 niter += 1
 
-            p_mean = p.mean()
-            # print p_mean
-            print p
             t += dt
+            # OUTPUT
+            p_mean = p[self.active_cells].mean()
+            well_data = self.wHandler.getWellData(p, self.wells,
+                                                  current_schedule)
+            # write
+            self._saveProductionData(well_data, p_mean, t, dt)
+
+            # stdout output
+            print t, p_mean, self.cum_production
+
+            # write field report
+            if (t in self.reptimes):
+                self._saveFieldData({'p (psi)': p}, t)
             dt = dtemp                   # restore original time step
 
     def computeResidual(self, p, p_old, dt,
@@ -182,7 +180,7 @@ def main():
     ]
 
     input_data = {
-        "CASE": "3x3_problem",     # name of the simulation case
+        "CASE": "3x3_problem_nr",     # name of the simulation case
         "DIMS": [xSize, ySize],      # dimensions of reservoir
         "ZCELLS": z_centers,      # z-coordinates of the cells
         "NX": nx,           # number of grid blocks along x
@@ -210,7 +208,7 @@ def main():
         "REPTIMES": [0.1],
     }
 
-    problem = SPhInComp2D(**input_data)
+    problem = SPhInComp2D_NR(**input_data)
     # print problem.schedule
     # print problem._readSchedule(99.6, 1.)
     problem.solve()
